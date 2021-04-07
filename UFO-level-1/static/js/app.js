@@ -17,6 +17,15 @@ tableData.forEach((sightings) => {
 });
 }
 
+var dict_filters = {}
+d3.selectAll(".form-control").on("change", function() {
+dict_filters[this.id] = d3.select(this).property("value");
+})
+
+console.log(dict_filters)
+
+
+
 // Get a reference to the filter button on the page (id property = 'filter-btn')
 var button = d3.select("#filter-btn");
 
@@ -40,7 +49,7 @@ function runEnter() {
     var inputValue_date = inputField_date.property("value");
 
     // Check if the input field is blank, if blank then run default_table function
-    if (inputValue_date.length == 0){
+    if (inputValue_date == 0){
 
         // Remove any children from the tbody
         tbody.html("");
@@ -52,20 +61,20 @@ function runEnter() {
     // if input field is not blank then filter the output
     else {
 
-    var filteredData_date = tableData.filter(date_filtered => date_filtered.datetime === inputValue_date);
+    var filteredData = tableData.filter(date_filtered => date_filtered.datetime === inputValue_date);
 
     // Remove any children from tbody
     tbody.html("");
 
     // Loop through 'filteredData' and use d3 to add data to webpage
-    filteredData_date.forEach((sightings) => {
+    filteredData.forEach((sightings) => {
         var record = tbody.append("tr");
         Object.entries(sightings).forEach(([key, value]) => {
             var data_value = record.append("td");
             data_value.text(value);
         });
     });
-
+        
     }
 }
 
