@@ -42,40 +42,46 @@ function runEnter() {
     // Prevent the page from refreshing
     d3.event.preventDefault();
 
-    // Get a reference to the input element in the datetime filter
-    var inputField_date = d3.select("#datetime");
+    Object.entries(dict_filters).forEach(([key, value]) => {
 
-    // Get the value property of the input element in the datetime filter
-    var inputValue_date = inputField_date.property("value");
+        var inputValue = value
+        console.log(inputValue)
+        // Get a reference to the input element in the datetime filter
+        // var inputField = d3.select("#datetime");
 
-    // Check if the input field is blank, if blank then run default_table function
-    if (inputValue_date == 0){
+        // Get the value property of the input element in the datetime filter
+        // var inputValue = inputField_date.property("value");
 
-        // Remove any children from the tbody
+        // Check if the input field is blank, if blank then run default_table function
+        if (inputValue == 0){
+
+            // Remove any children from the tbody
+            tbody.html("");
+
+            // run the default_table function
+            return default_table();
+        }
+        
+        // if input field is not blank then filter the output
+        else {
+
+        var filteredData = tableData.filter(results => results.dict_filters[key] === inputValue);
+
+        // Remove any children from tbody
         tbody.html("");
 
-        // run the default_table function
-        return default_table();
-    }
-    
-    // if input field is not blank then filter the output
-    else {
-
-    var filteredData = tableData.filter(date_filtered => date_filtered.datetime === inputValue_date);
-
-    // Remove any children from tbody
-    tbody.html("");
-
-    // Loop through 'filteredData' and use d3 to add data to webpage
-    filteredData.forEach((sightings) => {
-        var record = tbody.append("tr");
-        Object.entries(sightings).forEach(([key, value]) => {
-            var data_value = record.append("td");
-            data_value.text(value);
+        // Loop through 'filteredData' and use d3 to add data to webpage
+        filteredData.forEach((sightings) => {
+            var record = tbody.append("tr");
+            Object.entries(sightings).forEach(([key, value]) => {
+                var data_value = record.append("td");
+                data_value.text(value);
+            });
         });
-    });
         
     }
+    })
+
 }
 
 
