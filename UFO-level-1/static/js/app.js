@@ -21,6 +21,12 @@ function default_table(){
 var dict_filters = {}
 d3.selectAll(".form-control").on("change", function() {
     dict_filters[this.id] = d3.select(this).property("value");
+    // delete key value pair if user deletes input after entering it
+    for (var keys in dict_filters){
+        if(dict_filters[keys]=== ''){
+            delete dict_filters[keys];
+        };
+    };
 });
 
 // Get a reference to the filter button on the page (id property = 'filter-btn')
@@ -32,7 +38,7 @@ var form = d3.selectAll("form");
 // Create event handlers for the clear button
 var clear_button = d3.select("#clear-btn").on("click", function(){
     // Remove existing records in tbody
-    tbody.html("");
+    tbody.html("");    
     return default_table();
 });
 
@@ -47,11 +53,10 @@ function runEnter() {
     d3.event.preventDefault();
 
     Object.entries(dict_filters).forEach(([key, value]) => {
-
         var inputValue = value;
 
         // Check if the input field is blank, if blank then run default_table function
-        if (inputValue == 0){
+        if (inputValue.length == 0){
 
             // Remove existing records in tbody
             tbody.html("");
