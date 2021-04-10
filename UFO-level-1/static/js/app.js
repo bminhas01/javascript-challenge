@@ -17,18 +17,6 @@ function default_table(){
     });
 };
 
-// Create a dictionary to log the id of and value entered in each filter
-var dict_filters = {}
-d3.selectAll(".form-control").on("change", function() {
-    dict_filters[this.id] = d3.select(this).property("value");
-    // delete key value pair if user deletes input after entering it
-    for (var keys in dict_filters){
-        if(dict_filters[keys]=== ''){
-            delete dict_filters[keys];
-        };
-    };
-});
-
 // Get a reference to the filter button on the page (id property = 'filter-btn')
 var filter_button = d3.select("#filter-btn");
 
@@ -52,38 +40,41 @@ function runEnter() {
     // Prevent the page from refreshing
     d3.event.preventDefault();
 
-    Object.entries(dict_filters).forEach(([key, value]) => {
-        var inputValue = value;
+    // Select the input element using the id as reference
+    var inputElement = d3.select("#datetime");
 
-        // Check if the input field is blank, if blank then run default_table function
-        if (inputValue.length == 0){
+    // Get the value property of the input element
+    var inputValue = inputElement.property("value");
 
-            // Remove existing records in tbody
-            tbody.html("");
+    // Check if the input field is blank, if blank then run default_table function
+    if (inputValue.length == 0){
 
-            // run the default_table function
-            return default_table();
-        }
+        // Remove existing records in tbody
+        tbody.html("");
+
+        // run the default_table function
+        return default_table();
+    }
         
-        // if input field is not blank then filter the output
-        else {
+    // if input field is not blank then filter the output
+    else {
 
-            var filteredData = tableData.filter(results => results[key] === inputValue);
+        var filteredData = tableData.filter(results => results.datetime === inputValue);
 
-            // Remove existing records in tbody
-            tbody.html("");
+        // Remove existing records in tbody
+        tbody.html("");
 
-            // Loop through 'filteredData' and use d3 to add data to webpage
-            filteredData.forEach((sightings) => {
-                var record = tbody.append("tr");
-                Object.entries(sightings).forEach(([key, value]) => {
-                    var data_value = record.append("td");
-                    data_value.text(value);
-                });
+        // Loop through 'filteredData' and use d3 to add data to webpage
+        filteredData.forEach((sightings) => {
+            var record = tbody.append("tr");
+            Object.entries(sightings).forEach(([key, value]) => {
+                var data_value = record.append("td");
+                data_value.text(value);
             });
+        });
         
-        };
-    });
+    };
+
 
 };
 
