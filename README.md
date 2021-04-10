@@ -2,7 +2,7 @@
 
 This exercise is designed to create a table dynamically based upon a [dataset](UFO-level-1/static/js/data.js). The data is a collection of eye-witness reports of extra-terrestrial beings. The dataset is too large to search manually, therefore, users must have the ability to filter the table data for specific values. The entire exercise must be completed using only JavaScript, HTML, CSS, and D3.js. 
 
-### Level 1: Automatic Table and Date Search (Required)
+### Level 1: Automatic Table and Date Search
 
 * Create a basic HTML web page.
 
